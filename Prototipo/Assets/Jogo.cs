@@ -89,6 +89,8 @@ public class Jogo : MonoBehaviour, IClient
 
     public int chatMax = 25;
 
+    public ScrollRect scrollRect;
+
     public ans answer;
     private int level;
     private int nrQuestion;
@@ -174,7 +176,7 @@ public class Jogo : MonoBehaviour, IClient
     {
         // tempoQuestao.text = timer.ToString();
 
-
+        scrollRect.GetComponent<ScrollRect> ();
             
         tempoQuestao.text = "Tempo Restante: " + timer;
         pontuacao.text = "Pontuação: ";
@@ -1151,6 +1153,8 @@ public class Jogo : MonoBehaviour, IClient
         textoChat.painelTexto = novoChat.GetComponent<Text>();
 
         textoChat.painelTexto.text = textoChat.texto;
+       if(scrollRect.normalizedPosition.y < 0.0001f)
+            scrollRect.velocity = new Vector2 (0f, 1000f);
 
         if(message.moderator){
             ColorUtility.TryParseHtmlString("#f41004", out cor);

@@ -1,1 +1,0 @@
-# Responda se Puder Colaborativo
