@@ -58,8 +58,8 @@ MonoBehaviour:
   messageList: []
   chatMax: 25
   scrollRect: {fileID: 0}
-  btnOk: {fileID: 0}
   chatAberto: 0
+  notification: []
   ContentEquipes: {fileID: 0}
   prefabEquipes: {fileID: 0}
   m_Itens: 0
@@ -136,9 +136,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
-  ContentEquipes: {fileID: 0}
-  prefabEquipes: {fileID: 0}
-  m_Itens: 0
 --- !u!1 &2507529503883637746
 GameObject:
   m_ObjectHideFlags: 0
