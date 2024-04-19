@@ -264,7 +264,7 @@ public class profEspera : MonoBehaviour, IClient
         {
             if(Input.GetKeyDown(KeyCode.Return)){
                
-                var msg = new mensagemChat("MENSAGEM_CHAT", Manager.moderator, Manager.teamId, Manager.sessionId, Manager.gameId, chatBox.text, true);
+                var msg = new mensagemChat("MENSAGEM_CHAT", Manager.moderator, Manager.teamId, Manager.sessionId, Manager.gameId, chatBox.text, true, 0);
                 //var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, Manager.teamId, Manager.sessionId, Manager.gameId, chatBox.text, Manager.moderator);
                 cm.send(msg);
                // readChat(chatBox.text);

@@ -828,8 +828,11 @@ public class Jogo : MonoBehaviour, IClient
 
 
     }
-
-
+    public void ajudaDuvida()
+    {
+       var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, "Ajuda pedida ao moderador", false, 1);
+       cm.send(msg);
+    }
 
 // --------- TIMER ---------
 
@@ -1358,34 +1361,33 @@ public class Jogo : MonoBehaviour, IClient
     }
 
     public void MSG_CHAT(string msgJSON)
-    {
-
+    {  
         Color cor;
         msgCHAT message = JsonUtility.FromJson<msgCHAT>(msgJSON);
-
+       
         if(messageList.Count >= chatMax){
-            // Destroy(messageList[0].painelTexto.gameObject);
-            // messageList.Remove(messageList[0]);
+                // Destroy(messageList[0].painelTexto.gameObject);
+                // messageList.Remove(messageList[0]);
         }
 
         int remetenteId = message.user.id;
 
         Debug.Log(remetenteId);
-        
+            
         calculaInteracao(remetenteId);
 
         msgCHAT textoChat = new msgCHAT();
-
-        textoChat.texto = message.user.name + ":" + message.texto; 
-
+        if(message.ajuda == 0){
+            textoChat.texto = message.user.name + ":" + message.texto; 
+        }
+        else if(message.ajuda == 1){
+            textoChat.texto = message.texto;
+        }
         GameObject novoChat = Instantiate(painelTexto, painelChat.transform);
-
         textoChat.painelTexto = novoChat.GetComponent<Text>();
-
         textoChat.painelTexto.text = textoChat.texto;
-       if(scrollRect.normalizedPosition.y < 0.0001f)
+        if(scrollRect.normalizedPosition.y < 0.0001f)
             scrollRect.velocity = new Vector2 (0f, 1000f);
-
         if(message.moderator){
             ColorUtility.TryParseHtmlString("#f41004", out cor);
             textoChat.painelTexto.fontStyle = FontStyle.Bold;
@@ -1395,7 +1397,7 @@ public class Jogo : MonoBehaviour, IClient
             if(message.user.name == dadosTimes.player.name)
                 ColorUtility.TryParseHtmlString("#0505B1", out cor);
             else
-                ColorUtility.TryParseHtmlString("#112A46", out cor);
+                 ColorUtility.TryParseHtmlString("#112A46", out cor);
         }
 
         textoChat.painelTexto.color = cor;
@@ -1403,6 +1405,8 @@ public class Jogo : MonoBehaviour, IClient
 
 
         Debug.Log(textoChat.texto);
+        
+        
     }
 
 
@@ -1417,7 +1421,7 @@ public class Jogo : MonoBehaviour, IClient
         if(chatBox.text != "")
         {
             if(Input.GetKeyDown(KeyCode.Return)){
-                var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, chatBox.text, false);
+                var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, chatBox.text, false, 0);
                 //var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, Manager.teamId, Manager.sessionId, Manager.gameId, chatBox.text, Manager.moderator);
                 cm.send(msg);
                // readChat(chatBox.text);
@@ -1439,14 +1443,13 @@ public class msgCHAT
 {
     public string message_type;
     public string texto;
-
     public Text painelTexto;
     public User user;
-
     public int teamId;
     public string sessionId;
     public int gameId;
     public bool moderator;
+    public int ajuda;
 }
 
 [System.Serializable]

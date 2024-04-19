@@ -6755,7 +6755,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1052.6199, y: 119.86147}
+  m_AnchoredPosition: {x: 1052.6199, y: 119.861496}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0.95}
 --- !u!114 &1062279802
@@ -6881,7 +6881,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2025203444}
   m_HandleRect: {fileID: 2025203443}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10067,7 +10067,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1558478192}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1382524658}
+        m_TargetAssemblyTypeName: Jogo, Assembly-CSharp
+        m_MethodName: ajudaDuvida
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1558478192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14715,7 +14727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -549.99994, y: -70}
+  m_AnchoredPosition: {x: -550, y: -70}
   m_SizeDelta: {x: -1089.95, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2027631309
