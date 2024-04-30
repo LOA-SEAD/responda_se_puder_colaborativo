@@ -74,6 +74,7 @@ public class Jogo : MonoBehaviour, IClient
 
     public Button btnPular;
     public Button btn5050;
+    public Button btnDuvida;
     private float transparencia = 0.3f;
     private float sem_transparencia = 1.0f;
 
@@ -830,7 +831,7 @@ public class Jogo : MonoBehaviour, IClient
     }
     public void ajudaDuvida()
     {
-       var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, "Ajuda pedida ao moderador", false, 1);
+       var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, " pediu ajuda ao moderador", false, 1);
        cm.send(msg);
     }
 
@@ -908,7 +909,8 @@ public class Jogo : MonoBehaviour, IClient
         // btnPular.gameObject.SetActive(false);
         
         btn5050.interactable = true;
-        btnPular.interactable = true;    
+        btnPular.interactable = true;  
+        btnDuvida.interactable = true;    
         SetAlpha();
 
            
@@ -967,6 +969,7 @@ public class Jogo : MonoBehaviour, IClient
             btnOK.interactable = true;
             btn5050.interactable = true;
             btnPular.interactable = true;
+            btnDuvida.interactable = true;  
             generalCommands.EnableInteraction(quadroChat);
         }
     }
@@ -1381,7 +1384,10 @@ public class Jogo : MonoBehaviour, IClient
             textoChat.texto = message.user.name + ":" + message.texto; 
         }
         else if(message.ajuda == 1){
-            textoChat.texto = message.texto;
+            textoChat.texto = message.user.name + message.texto;
+            TextMeshProUGUI Duvidatext = btnDuvida.GetComponentInChildren<TextMeshProUGUI>();
+            Duvidatext.color = Color.gray;
+            btnDuvida.interactable = false;
         }
         GameObject novoChat = Instantiate(painelTexto, painelChat.transform);
         textoChat.painelTexto = novoChat.GetComponent<Text>();

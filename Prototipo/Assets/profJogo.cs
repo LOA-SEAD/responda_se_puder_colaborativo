@@ -96,20 +96,23 @@ public class profJogo : MonoBehaviour, IClient
     {
         Color cor;
         msgCHAT_moderator message = JsonUtility.FromJson<msgCHAT_moderator>(msgJSON);
-        if(message.ajuda == 0){
             if (!msgTeams.ContainsKey(message.teamId))
             {
                 msgTeams[message.teamId] = new List<msgCHAT_moderator>();
             }
-
             msgCHAT_moderator textoChat = new msgCHAT_moderator();
             if (message.moderator)
             {
                 textoChat.texto = message.user.name + ": " + message.texto; // Se é moderador
             }
-            else
+            else if(message.ajuda == 0)
             {
                 textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + ": " + message.texto; // Se não é moderador
+            }
+            else if(message.ajuda == 1)
+            {
+                textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + message.texto; // Se não é moderador
+                duvida[message.teamId].gameObject.SetActive(true);
             }
             GameObject novoChat = Instantiate(painelTexto, painelChat.transform);
             textoChat.painelTexto = novoChat.GetComponent<Text>();
@@ -123,8 +126,9 @@ public class profJogo : MonoBehaviour, IClient
                 textoChat.painelTexto.gameObject.SetActive(true);
             }
 
-            if (chatAberto != message.teamId) 
+            if (chatAberto != message.teamId){ 
                 notification[message.teamId].gameObject.SetActive(true);
+            }
         
             if (message.moderator)
             {
@@ -140,10 +144,6 @@ public class profJogo : MonoBehaviour, IClient
             msgTeams[message.teamId].Add(textoChat);
 
             Debug.Log(textoChat.texto);
-        }
-        else if(message.ajuda == 1){
-            duvida[message.teamId].gameObject.SetActive(true);
-        }
     }
 
     public void btnTeamChat(int teamId)
@@ -217,7 +217,7 @@ public class profJogo : MonoBehaviour, IClient
             novaEquipe.transform.localScale = new Vector3(1.894364f, 0.179433f, 0.23102f);
             notification.Add(novaEquipe.transform.Find("notification").gameObject);
             duvida.Add(novaEquipe.transform.Find("duvida").gameObject);
-           // notification[i].SetActive(true);
+            //duvida[i].SetActive(true);
             quadrosEquipe.Add(novaEquipe);
 
             int teamId = i+1;
