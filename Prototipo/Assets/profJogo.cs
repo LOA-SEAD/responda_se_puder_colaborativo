@@ -101,7 +101,7 @@ public class profJogo : MonoBehaviour, IClient
                 msgTeams[message.teamId] = new List<msgCHAT_moderator>();
             }
             msgCHAT_moderator textoChat = new msgCHAT_moderator();
-            if (message.moderator)
+            if (message.moderator && message.ajuda != 2)
             {
                 textoChat.texto = message.user.name + ": " + message.texto; // Se é moderador
             }
@@ -112,7 +112,21 @@ public class profJogo : MonoBehaviour, IClient
             else if(message.ajuda == 1)
             {
                 textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + message.texto; // Se não é moderador
-                duvida[message.teamId].gameObject.SetActive(true);
+                if(chatAberto != message.teamId)
+                {
+                    duvida[message.teamId-1].gameObject.SetActive(true);
+                }
+            }
+            else if(message.ajuda == 2)
+            {   
+                if(!message.moderator){
+                     textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + message.texto;
+                     duvida[message.teamId-1].gameObject.SetActive(false);
+                }
+                else 
+                {
+                    textoChat.texto = message.user.name + message.texto;
+                }
             }
             GameObject novoChat = Instantiate(painelTexto, painelChat.transform);
             textoChat.painelTexto = novoChat.GetComponent<Text>();
@@ -126,7 +140,7 @@ public class profJogo : MonoBehaviour, IClient
                 textoChat.painelTexto.gameObject.SetActive(true);
             }
 
-            if (chatAberto != message.teamId){ 
+            if (chatAberto != message.teamId && message.ajuda == 0){ 
                 notification[message.teamId].gameObject.SetActive(true);
             }
         
@@ -134,6 +148,10 @@ public class profJogo : MonoBehaviour, IClient
             {
                 ColorUtility.TryParseHtmlString("#f41004", out cor);
                 textoChat.painelTexto.fontStyle = FontStyle.Bold;
+            }
+            else if(message.ajuda != 0)
+            {
+                ColorUtility.TryParseHtmlString("#0505B1", out cor);
             }
             else
             {
@@ -152,7 +170,11 @@ public class profJogo : MonoBehaviour, IClient
         Debug.Log(Manager.teamId);
         chatAberto = teamId;
         notification[teamId].gameObject.SetActive(false);
-        duvida[teamId].gameObject.SetActive(false);
+        if(duvida[teamId-1].activeInHierarchy){
+            var msg = new mensagemChat("MENSAGEM_CHAT", Manager.moderator, Manager.teamId, Manager.sessionId, Manager.gameId, " veio ajudar a equipe", true, 2);
+            cm.send(msg);
+            duvida[teamId-1].gameObject.SetActive(false);
+        }
         if (msgTeams.ContainsKey(teamId))
         {
             List<msgCHAT_moderator> mensagensDoTime = msgTeams[teamId];

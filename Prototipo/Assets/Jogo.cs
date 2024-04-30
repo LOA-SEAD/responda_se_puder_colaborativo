@@ -75,6 +75,7 @@ public class Jogo : MonoBehaviour, IClient
     public Button btnPular;
     public Button btn5050;
     public Button btnDuvida;
+    public bool btnCancela = false;
     private float transparencia = 0.3f;
     private float sem_transparencia = 1.0f;
 
@@ -831,8 +832,14 @@ public class Jogo : MonoBehaviour, IClient
     }
     public void ajudaDuvida()
     {
-       var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, " pediu ajuda ao moderador", false, 1);
-       cm.send(msg);
+        if(!btnCancela){
+            var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, " pediu ajuda ao moderador", false, 1);
+            cm.send(msg);
+        }
+        else{
+            var msg = new mensagemChat("MENSAGEM_CHAT", dadosTimes.player, ID_TEAM, Manager.sessionId, Manager.gameId, " cancelou a ajuda", false, 2);
+            cm.send(msg);
+        }
     }
 
 // --------- TIMER ---------
@@ -1386,8 +1393,22 @@ public class Jogo : MonoBehaviour, IClient
         else if(message.ajuda == 1){
             textoChat.texto = message.user.name + message.texto;
             TextMeshProUGUI Duvidatext = btnDuvida.GetComponentInChildren<TextMeshProUGUI>();
-            Duvidatext.color = Color.gray;
-            btnDuvida.interactable = false;
+            if(message.user.name == dadosTimes.player.name){
+                Duvidatext.text = "CANCELAR";
+                btnCancela = true;
+            }
+            else{
+                Duvidatext.color = Color.gray;
+                btnDuvida.interactable = false;
+            }
+        }
+        else{
+            textoChat.texto = message.user.name + message.texto;
+            TextMeshProUGUI Duvidatext = btnDuvida.GetComponentInChildren<TextMeshProUGUI>();
+            Duvidatext.text = "DÚVIDA";
+            btnCancela = false;
+            Duvidatext.color = Color.yellow;
+            btnDuvida.interactable = true;
         }
         GameObject novoChat = Instantiate(painelTexto, painelChat.transform);
         textoChat.painelTexto = novoChat.GetComponent<Text>();
@@ -1400,7 +1421,7 @@ public class Jogo : MonoBehaviour, IClient
         }
         else{
             //textoChat.painelTexto.fontStyle = FontStyle.Regular;
-            if(message.user.name == dadosTimes.player.name)
+            if(message.user.name == dadosTimes.player.name || message.ajuda != 0)
                 ColorUtility.TryParseHtmlString("#0505B1", out cor);
             else
                  ColorUtility.TryParseHtmlString("#112A46", out cor);
