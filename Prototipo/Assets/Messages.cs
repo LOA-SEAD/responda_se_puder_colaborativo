@@ -36,10 +36,10 @@ public class mensagemChat : ServerMessage
     public User user;
     public bool moderator;
     public int teamId;
-    public int ajuda;
+    public int categoria;
 
     //public mensagemChat( string messageType, User user, int teamId, int sessionId, int gameId, string texto){
-    public mensagemChat( string messageType, User user, int teamId, int sessionId, int gameId, string texto, bool moderator, int ajuda){
+    public mensagemChat( string messageType, User user, int teamId, int sessionId, int gameId, string texto, bool moderator, int categoria){
      //   this.user = user;
         this.texto = texto;
         this.messageType = messageType;
@@ -48,7 +48,7 @@ public class mensagemChat : ServerMessage
         this.sessionId = sessionId;
         this.user = user;
         this.moderator = moderator;
-        this.ajuda = ajuda;
+        this.categoria = categoria;
     }
 
 }

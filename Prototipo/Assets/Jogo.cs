@@ -1248,6 +1248,11 @@ public class Jogo : MonoBehaviour, IClient
 
     public void MSG_MOMENTO_GRUPO(string msgJSON)
     {
+        TextMeshProUGUI Duvidatext = btnDuvida.GetComponentInChildren<TextMeshProUGUI>();
+        Duvidatext.text = "DÚVIDA";
+        btnCancela = false;
+        Duvidatext.color = Color.yellow;
+        btnDuvida.interactable = true;
         msgMOMENTO_GRUPO message = JsonUtility.FromJson<msgMOMENTO_GRUPO>(msgJSON);
 
         interaction = 0;
@@ -1387,10 +1392,10 @@ public class Jogo : MonoBehaviour, IClient
         calculaInteracao(remetenteId);
 
         msgCHAT textoChat = new msgCHAT();
-        if(message.ajuda == 0){
+        if(message.categoria == Categoria.Comum){
             textoChat.texto = message.user.name + ":" + message.texto; 
         }
-        else if(message.ajuda == 1){
+        else if(message.categoria == Categoria.PedirAjuda){
             textoChat.texto = message.user.name + message.texto;
             TextMeshProUGUI Duvidatext = btnDuvida.GetComponentInChildren<TextMeshProUGUI>();
             if(message.user.name == dadosTimes.player.name){
@@ -1421,7 +1426,7 @@ public class Jogo : MonoBehaviour, IClient
         }
         else{
             //textoChat.painelTexto.fontStyle = FontStyle.Regular;
-            if(message.user.name == dadosTimes.player.name || message.ajuda != 0)
+            if(message.user.name == dadosTimes.player.name || message.categoria != Categoria.Comum)
                 ColorUtility.TryParseHtmlString("#0505B1", out cor);
             else
                  ColorUtility.TryParseHtmlString("#112A46", out cor);
@@ -1464,6 +1469,13 @@ public class Jogo : MonoBehaviour, IClient
 
 // --------- MENSAGENS ---------
 
+[System.Serializable]
+public enum Categoria
+{
+    Comum,
+    PedirAjuda,
+    CancelarAjuda
+}
 
 [System.Serializable]
 public class msgCHAT
@@ -1476,7 +1488,7 @@ public class msgCHAT
     public string sessionId;
     public int gameId;
     public bool moderator;
-    public int ajuda;
+    public Categoria categoria;
 }
 
 [System.Serializable]

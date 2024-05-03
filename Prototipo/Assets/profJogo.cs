@@ -101,15 +101,15 @@ public class profJogo : MonoBehaviour, IClient
                 msgTeams[message.teamId] = new List<msgCHAT_moderator>();
             }
             msgCHAT_moderator textoChat = new msgCHAT_moderator();
-            if (message.moderator && message.ajuda != 2)
+            if (message.moderator && message.categoria !=  Categoria.CancelarAjuda)
             {
                 textoChat.texto = message.user.name + ": " + message.texto; // Se é moderador
             }
-            else if(message.ajuda == 0)
+            else if(message.categoria == Categoria.Comum)
             {
                 textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + ": " + message.texto; // Se não é moderador
             }
-            else if(message.ajuda == 1)
+            else if(message.categoria == Categoria.PedirAjuda)
             {
                 textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + message.texto; // Se não é moderador
                 if(chatAberto != message.teamId)
@@ -117,7 +117,7 @@ public class profJogo : MonoBehaviour, IClient
                     duvida[message.teamId-1].gameObject.SetActive(true);
                 }
             }
-            else if(message.ajuda == 2)
+            else if(message.categoria == Categoria.CancelarAjuda)
             {   
                 if(!message.moderator){
                      textoChat.texto = "Equipe " + message.teamId + " / " + message.user.name + message.texto;
@@ -140,7 +140,7 @@ public class profJogo : MonoBehaviour, IClient
                 textoChat.painelTexto.gameObject.SetActive(true);
             }
 
-            if (chatAberto != message.teamId && message.ajuda == 0){ 
+            if (chatAberto != message.teamId && message.categoria == 0){ 
                 notification[message.teamId].gameObject.SetActive(true);
             }
         
@@ -149,7 +149,7 @@ public class profJogo : MonoBehaviour, IClient
                 ColorUtility.TryParseHtmlString("#f41004", out cor);
                 textoChat.painelTexto.fontStyle = FontStyle.Bold;
             }
-            else if(message.ajuda != 0)
+            else if(message.categoria != Categoria.Comum)
             {
                 ColorUtility.TryParseHtmlString("#0505B1", out cor);
             }
@@ -239,7 +239,7 @@ public class profJogo : MonoBehaviour, IClient
             novaEquipe.transform.localScale = new Vector3(1.894364f, 0.179433f, 0.23102f);
             notification.Add(novaEquipe.transform.Find("notification").gameObject);
             duvida.Add(novaEquipe.transform.Find("duvida").gameObject);
-            //duvida[i].SetActive(true);
+            duvida[i].SetActive(false);
             quadrosEquipe.Add(novaEquipe);
 
             int teamId = i+1;
@@ -301,6 +301,5 @@ public class msgCHAT_moderator
     public string sessionId;
     public int gameId;
     public bool moderator;
-    public int ajuda;
-
+    public Categoria categoria;
 }
